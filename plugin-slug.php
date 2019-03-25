@@ -9,6 +9,9 @@
  * Domain Path:     /languages
  * Version:         0.1.0
  *
+ * Plugin File Prefix        plugin-prefix
+ * Plugin Function Prefix    PluginPrefix
+ *
  * @package         PluginSlug
  */
 
