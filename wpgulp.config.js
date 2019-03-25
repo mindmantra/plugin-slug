@@ -16,20 +16,23 @@ module.exports = {
 	injectChanges: true,
 
 	// Style options.
-	styleSRC: './assets/css/style.scss', // Path to main .scss file.
-	styleDestination: './', // Path to place the compiled CSS file. Default set to root folder.
+	styleSRCFrontend: './assets/src/frontend/css/style.scss', // Path to main .scss file.
+	styleDestinationFrontend: './assets/frontend/', // Path to place the compiled CSS file. Default set to root folder.
+	styleSRCAdmin: './assets/src/admin/css/style.scss', // Path to main .scss file.
+	styleDestinationAdmin: './assets/admin/', // Path to place the compiled CSS file. Default set to root folder.
 	outputStyle: 'compact', // Available options → 'compact' or 'compressed' or 'nested' or 'expanded'
 	errLogToConsole: true,
 	precision: 10,
 
 	// JS Vendor options.
-	jsVendorSRC: './assets/js/vendor/*.js', // Path to JS vendor folder.
+	jsVendorSRC: './assets/src/js/vendor/*.js', // Path to JS vendor folder.
 	jsVendorDestination: './assets/js/', // Path to place the compiled JS vendors file.
 	jsVendorFile: 'plugin-prefix-vendor', // Compiled JS vendors file name. Default set to vendors i.e. vendors.js.
 
 	// JS Custom options.
-	jsCustomSRC: './assets/js/custom/*.js', // Path to JS custom scripts folder.
-	jsCustomDestination: './assets/js/', // Path to place the compiled JS custom scripts file.
+	jsCustomSRC: './assets/src/**/js/custom/*.js', // Path to JS custom scripts folder.
+	jsCustomDestinationFrontend: './assets/frontend/js/', // Path to place the compiled JS custom scripts file.
+	jsCustomDestinationAdmin: './assets/admin/js/', // Path to place the compiled JS custom scripts file.
 	jsCustomFile: 'plugin-prefix-custom', // Compiled JS custom file name. Default set to custom i.e. custom.js.
 
 	// Images options.

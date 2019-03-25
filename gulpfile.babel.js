@@ -114,7 +114,7 @@ const reload = done => {
  */
 gulp.task( 'styles', () => {
 	return gulp
-		.src( config.styleSRC, { allowEmpty: true })
+		.src( config.styleSRCFrontend, config.styleSRCAdmin, { allowEmpty: true })
 		.pipe( plumber( errorHandler ) )
 		.pipe( sourcemaps.init() )
 		.pipe(
@@ -130,14 +130,14 @@ gulp.task( 'styles', () => {
 		.pipe( autoprefixer( config.BROWSERS_LIST ) )
 		.pipe( sourcemaps.write( './' ) )
 		.pipe( lineec() ) // Consistent Line Endings for non UNIX systems.
-		.pipe( gulp.dest( config.styleDestination ) )
+		.pipe( gulp.dest( (file) => -1 === file.path.indexOf('frontend') ? config.styleDestinationAdmin : config.styleDestinationFrontend ) )
 		.pipe( filter( '**/*.css' ) ) // Filtering stream to only css files.
 		.pipe( mmq({ log: true }) ) // Merge Media Queries only for .min.css version.
 		.pipe( browserSync.stream() ) // Reloads style.css if that is enqueued.
 		.pipe( rename({ suffix: '.min' }) )
 		.pipe( minifycss({ maxLineLen: 10 }) )
 		.pipe( lineec() ) // Consistent Line Endings for non UNIX systems.
-		.pipe( gulp.dest( config.styleDestination ) )
+		.pipe( gulp.dest( (file) => -1 === file.path.indexOf('frontend') ? config.styleDestinationAdmin : config.styleDestinationFrontend ) )
 		.pipe( filter( '**/*.css' ) ) // Filtering stream to only css files.
 		.pipe( browserSync.stream() ) // Reloads style.min.css if that is enqueued.
 		.pipe( notify({ message: '\n\n✅  ===> STYLES — completed!\n', onLast: true }) );
@@ -160,7 +160,7 @@ gulp.task( 'styles', () => {
  */
 gulp.task( 'stylesRTL', () => {
 	return gulp
-		.src( config.styleSRC, { allowEmpty: true })
+		.src( config.styleSRCFrontend, config.styleDestinationAdmin, { allowEmpty: true })
 		.pipe( plumber( errorHandler ) )
 		.pipe( sourcemaps.init() )
 		.pipe(
@@ -178,14 +178,20 @@ gulp.task( 'stylesRTL', () => {
 		.pipe( rename({ suffix: '-rtl' }) ) // Append "-rtl" to the filename.
 		.pipe( rtlcss() ) // Convert to RTL.
 		.pipe( sourcemaps.write( './' ) ) // Output sourcemap for style-rtl.css.
-		.pipe( gulp.dest( config.styleDestination ) )
+		.pipe( gulp.dest(  (file) => -1 === file.path.indexOf('frontend') ? config.styleDestinationAdmin : config.styleDestinationFrontend  ) )
 		.pipe( filter( '**/*.css' ) ) // Filtering stream to only css files.
 		.pipe( browserSync.stream() ) // Reloads style.css or style-rtl.css, if that is enqueued.
 		.pipe( mmq({ log: true }) ) // Merge Media Queries only for .min.css version.
-		.pipe( rename({ suffix: '.min' }) )
+		.pipe( rename((file) => {
+			_prefix =  -1 === file.path.indexOf('frontend') ? 'admin-' : 'frontend-'
+			return {
+				suffix: '.min',
+				prefix: _prefix
+			}
+		}) )
 		.pipe( minifycss({ maxLineLen: 10 }) )
 		.pipe( lineec() ) // Consistent Line Endings for non UNIX systems.
-		.pipe( gulp.dest( config.styleDestination ) )
+		.pipe( gulp.dest(  (file) => -1 === file.path.indexOf('frontend') ? config.styleDestinationAdmin : config.styleDestinationFrontend  ) )
 		.pipe( filter( '**/*.css' ) ) // Filtering stream to only css files.
 		.pipe( browserSync.stream() ) // Reloads style.css or style-rtl.css, if that is enqueued.
 		.pipe( notify({ message: '\n\n✅  ===> STYLES RTL — completed!\n', onLast: true }) );
@@ -264,7 +270,7 @@ gulp.task( 'customJS', () => {
 		.pipe( remember( config.jsCustomSRC ) ) // Bring all files back to stream.
 		.pipe( concat( config.jsCustomFile + '.js' ) )
 		.pipe( lineec() ) // Consistent Line Endings for non UNIX systems.
-		.pipe( gulp.dest( config.jsCustomDestination ) )
+		.pipe( gulp.dest( (file) => -1 === file.path.indexOf('frontend') ? config.jsCustomDestinationAdmin : config.jsCustomDestinationFrontend ) )
 		.pipe(
 			rename({
 				basename: config.jsCustomFile,
